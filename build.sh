@@ -32,3 +32,14 @@ for IMAGE in ${DISTRIBUTEDLOG_IMAGES}; do
   docker tag $DOCKER_TAG_OPTS "fcuny/${IMAGE}:${DISTRIBUTEDLOG_VERSION}" "fcuny/${IMAGE}:latest"
   TAGS="${TAGS} fcuny/${IMAGE}:latest"
 done
+
+if [ -n "${DLOG_RELEASE_IMAGES}" ]; then
+  docker tag fcuny/zookeeper us.gcr.io/fcuny-devel/zookeeper
+  gcloud docker push us.gcr.io/fcuny-devel/zookeeper --verbosity debug
+
+  docker tag fcuny/bookkeeper us.gcr.io/fcuny-devel/bookkeeper
+  gcloud docker push us.gcr.io/fcuny-devel/bookkeeper --verbosity debug
+
+  docker tag fcuny/distributedlog us.gcr.io/fcuny-devel/distributedlog
+  gcloud docker push us.gcr.io/fcuny-devel/distributedlog --verbosity debug
+fi

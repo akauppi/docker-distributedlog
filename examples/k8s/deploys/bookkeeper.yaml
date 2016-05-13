@@ -1,0 +1,45 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bookkeeper-bookie
+  labels:
+    app: bookkeeper
+    component: bookkeeper-bookie
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bookkeeper
+        component: bookkeeper-bookie
+    spec:
+      containers:
+        - name: bookie
+          image: us.gcr.io/fcuny-devel/bookkeeper
+          env:
+          - name: BOOKKEEPER_ZOOKEEPER_CONNECT
+            value: zookeeper-1.default.svc.cluster.local:2181
+          ports:
+          - containerPort: 3181
+            name: bookkeeper
+          volumeMounts:
+          - name: bookkeeper-persistent-index
+            mountPath: /data/index
+          - name: bookkeeper-persistent-journal
+            mountPath: /data/journal
+          - name: bookkeeper-persistent-ledger
+            mountPath: /data/ledger
+      volumes:
+        - name: bookkeeper-persistent-index
+          gcePersistentDisk:
+            pdName: bookkeeper-index
+            fsType: ext4
+        - name: bookkeeper-persistent-journal
+          gcePersistentDisk:
+            pdName: bookkeeper-journal
+            fsType: ext4
+        - name: bookkeeper-persistent-ledger
+          gcePersistentDisk:
+            pdName: bookkeeper-ledger
+            fsType: ext4

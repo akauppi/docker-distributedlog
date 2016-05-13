@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookkeeper-svc
+  labels:
+    app: bookkeeper
+    component: bookkeeper-bookie
+spec:
+  ports:
+    - name: bookie
+      port: 3181
+      protocol: TCP
+  selector:
+    app: bookkeeper
+    component: bookkeeper-bookie

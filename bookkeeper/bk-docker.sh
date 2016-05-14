@@ -12,4 +12,24 @@ if [ ! -z "$BK_CFG_URL" ]; then
   fi
 fi
 
+if [[ -n "${BOOKKEEPER_ZOOKEEPER_CONNECT}" ]]; then
+  sed -i "s/zkServers=localhost:2181/zkServers=${BOOKKEEPER_ZOOKEEPER_CONNECT}/" "${BK_CFG_FILE}"
+fi
+
+if [[ -n "${BOOKKEEPER_ZK_LEDGER_ROOT_PATH}" ]]; then
+  echo "zkLedgersRootPath=${BOOKKEEPER_ZK_LEDGER_ROOT_PATH}" >> "${BK_CFG_FILE}"
+fi
+
+for setting in indexDirectories journalDirectory ledgerDirectories; do
+  dirValue=$(grep "^$setting" "${BK_CFG_FILE}" | sed -e 's/.*=//')
+  if [[ -z "${dirValue}" ]]; then
+    echo "$setting is missing in the configuration file"
+    exit 1
+  fi
+done
+
+env
+
+cat "${BK_CFG_FILE}"
+
 exec $@

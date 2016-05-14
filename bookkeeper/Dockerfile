@@ -1,4 +1,5 @@
 FROM java:openjdk-8-jre-alpine
+
 MAINTAINER Franck Cuny <franck.cuny@gmail.com>
 
 LABEL name="bookkeeper" version="4.3.2"
@@ -11,7 +12,7 @@ RUN apk add --no-cache wget bash \
 
 WORKDIR /opt/bookkeeper
 
-COPY config /opt/bookkeeper/conf
+COPY config /opt/bookkeeper/conf/
 ADD bk-docker.sh /usr/local/bin/
 ADD start-bookkeeper.sh /usr/local/bin/
 COPY bookkeeper /opt/bookkeeper/bin/
@@ -30,4 +31,4 @@ EXPOSE 3181/tcp
 
 ENTRYPOINT ["/usr/local/bin/bk-docker.sh"]
 
-CMD ["/usr/local/bin/start-bookkeeper.sh"]
+CMD ["/opt/bookkeeper/bin/bookkeeper", "bookie"]

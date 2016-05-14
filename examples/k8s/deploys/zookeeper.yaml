@@ -12,17 +12,15 @@ spec:
     spec:
       containers:
       - name: zookeeper-1
-        image: digitalwonderland/zookeeper
+        image: us.gcr.io/fcuny-devel/zookeeper
         ports:
         - containerPort: 2181
         - containerPort: 2888
         - containerPort: 3888
         env:
-        - name: ZOOKEEPER_ID
+        - name: zk_id
           value: "1"
-        - name: ZOOKEEPER_SERVER_1
-          value: zookeeper-1.default.svc.cluster.local
-        - name: ZOOKEEPER_SERVER_2
+        - name: SERVERS
           value: zookeeper-2.default.svc.cluster.local
 ---
 apiVersion: extensions/v1beta1
@@ -38,16 +36,14 @@ spec:
     spec:
       containers:
       - name: zookeeper-2
-        image: digitalwonderland/zookeeper
+        image: us.gcr.io/fcuny-devel/zookeeper
         ports:
         - containerPort: 2181
         - containerPort: 2888
         - containerPort: 3888
         env:
-        - name: ZOOKEEPER_ID
+        - name: zk_id
           value: "2"
-        - name: ZOOKEEPER_SERVER_1
+        - name: SERVERS
           value: zookeeper-1.default.svc.cluster.local
-        - name: ZOOKEEPER_SERVER_2
-          value: zookeeper-2.default.svc.cluster.local
 ---

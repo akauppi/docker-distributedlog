@@ -45,4 +45,8 @@ if [ -n "$SERVERS" ]; then
     printf '%s' "$SERVERS" | awk 'BEGIN { RS = "," }; { printf "server.%i=%s:2888:3888\n", NR, $0 }' >> /opt/zookeeper/conf/zoo.cfg
 fi
 
+env
+
+cat "${ZK_CFG_FILE}"
+
 exec $@

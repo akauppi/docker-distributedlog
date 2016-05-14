@@ -1,4 +1,5 @@
 FROM java:openjdk-8-jre-alpine
+
 MAINTAINER Franck Cuny <franck.cuny@gmail.com>
 
 LABEL name="distributedlog" version="0.3.51"
@@ -12,6 +13,10 @@ RUN apk add --no-cache wget bash \
 
 WORKDIR /opt/distributedlog
 
-EXPOSE 7000/tcp
+COPY write-proxy-start.sh /usr/local/bin/
 
-CMD ["/opt/distributedlog/bin/dlog-start", "local", "7000"]
+RUN ["chmod", "+x", "/usr/local/bin/write-proxy-start.sh"]
+
+EXPOSE 8000/tcp
+
+CMD ["/usr/local/bin/write-proxy-start.sh"]

@@ -9,11 +9,13 @@ RUN apk add --no-cache wget bash \
     && cd /opt \
     && wget -q https://github.com/twitter/distributedlog/releases/download/0.3.51-RC0/distributedlog-service-63d214d3a739cb58a71a8b51127f165d15f00584.zip \
     && unzip distributedlog-service-63d214d3a739cb58a71a8b51127f165d15f00584.zip \
-    && mv distributedlog-service/ distributedlog/
+    && mv distributedlog-service/ distributedlog/ \
+    && rm -rf distributedlog/conf
 
 WORKDIR /opt/distributedlog
 
-COPY write-proxy-start.sh /usr/local/bin/
+COPY bin/write-proxy-start.sh /usr/local/bin/
+COPY conf /opt/distributedlog/conf
 
 RUN ["chmod", "+x", "/usr/local/bin/write-proxy-start.sh"]
 
